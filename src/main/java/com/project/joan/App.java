@@ -28,9 +28,9 @@ public class App {
 	}
 	
 	public void createPlayer() {
-		System.out.println("Tell me the arrows you want to dispose: ");
-		int l_choice = g_sc.nextInt();
-		g_player = new Player(l_choice);
+//		System.out.println("Tell me the arrows you want to dispose: ");
+//		int l_choice = g_sc.nextInt();
+		g_player = new Player();
 	}
 	
 	public void play() {
@@ -39,22 +39,26 @@ public class App {
 		String result = null;
 		String l_entry = "";
 		while (!l_entry.equalsIgnoreCase(EXIT)) {
+			System.out.println("My coordinates are: ");
+			System.out.println("x= "+g_player.getX_position());
+			System.out.println("y= "+g_player.getY_position());
+			System.out.println("Orientation= "+g_player.getOrientation());
 			System.out.println("Press a key: ");
-			l_entry = g_sc.nextLine().toUpperCase();
+			l_entry = g_sc.next().toUpperCase();
 			switch (l_entry) {
 			case EXIT: l_entry = EXIT; 
 			result = EXIT;
 			break;
-			case GOAHEAD: g_player.goAhead(); 
+			case GOAHEAD: g_player.move();
 			result = GOAHEAD;
 			break;
-			case TURNLEFT: g_player.rotate(TURNLEFT); 
+			case TURNLEFT: g_player.rotate(TURNLEFT);
 			result = TURNLEFT;
 			break;
-			case TURNRIGHT: g_player.rotate(TURNLEFT); 
+			case TURNRIGHT: g_player.rotate(TURNRIGHT);
 			result = TURNRIGHT;
 			break;
-			case SHOOT: g_player.shoot(); 
+			case SHOOT: g_player.shoot();
 			result = SHOOT;
 			break;
 			default: result = "NON VALID CHOICE!"; break;
