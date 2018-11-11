@@ -45,14 +45,20 @@ public class Board {
 	public void initialisePieces() {
 		initWumpus();
 		initCaves();
+		initGold();
 	}
 
-	public void initWumpus() {
+	private void initWumpus() {
 		int[] l_validCoords = isValidCoord();
 		wumpusDraw(l_validCoords[0], l_validCoords[1]);
 	}
+	
+	private void initGold() {
+		int[] l_validCoords = isValidCoord();
+		goldDraw(l_validCoords[0], l_validCoords[1]);
+	}
 
-	public int[] isValidCoord() {
+	private int[] isValidCoord() {
 		int[] l_randomCoord;
 		do {
 			l_randomCoord = RandomNumbers();
@@ -63,8 +69,12 @@ public class Board {
 	private void wumpusDraw(int p_x, int p_y) {
 		g_squareBoard[p_x][p_y] = WUMPUS;
 	}
+	
+	private void goldDraw(int p_x, int p_y) {
+		g_squareBoard[p_x][p_y] = GOLD;
+	}
 
-	public void initCaves() {
+	private void initCaves() {
 		for (int i = 0; i <= g_numberCaves; i++) {
 			int[] l_validCoords = isValidCoord();
 			caveDraw(l_validCoords[0], l_validCoords[1]);
@@ -75,7 +85,7 @@ public class Board {
 		g_squareBoard[p_x][p_y] = CAVE;
 	}
 
-	public int[] RandomNumbers() {
+	private int[] RandomNumbers() {
 		Random l_random = new Random();
 		int l_x;
 		int l_y;

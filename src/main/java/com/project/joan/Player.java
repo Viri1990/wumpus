@@ -26,12 +26,6 @@ public class Player {
 		this.arrows = p_arrows;
 	}
 
-	public void move() {
-		
-		goAhead();
-
-	}
-
 	public void goAhead() {
 		switch (this.orientation) {
 		case NORTH:
@@ -87,8 +81,15 @@ public class Player {
 	public void shoot() {
 		System.out.println("Method shoot");
 	}
+	
+	public boolean startPosition() {
+		if(getX_position()==0 && getY_position()==0) {
+			return true;
+		}
+		return false;
+	}
 
-	public static int getIdentifier() {
+	public int getIdentifier() {
 		return IDENTIFIER;
 	}
 

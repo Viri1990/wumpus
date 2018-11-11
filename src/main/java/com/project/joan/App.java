@@ -21,6 +21,7 @@ public class App {
 	
 	private Scanner g_sc = new Scanner(System.in);
 	private boolean G_ALIVE;
+	private boolean G_GOLD;
 	Board g_board;
 	Player g_player;
 
@@ -71,6 +72,7 @@ public class App {
 
 	public void play() {
 		G_ALIVE = true;
+		G_GOLD = false;
 		createBoard();
 		createPlayer();
 		System.out.println("Let's start!!");
@@ -109,11 +111,22 @@ public class App {
 				break;
 			}
 			System.out.println("Your choice is: " + result);
+			if(isVictory()) {
+				System.out.println("YOU WON!!");
+				return;
+			}
 		}
 
 	}
 	
-	public void checkMove() {
+	private boolean isVictory() {
+		if(g_player.startPosition() && G_GOLD) {
+			return true;
+		}
+		return false;
+	}
+	
+	private void checkMove() {
 		if (!g_board.possibleGoAhead(g_player.getX_position(), g_player.getY_position(),
 				g_player.getOrientation())) {
 			System.out.println("YOU GET THE WALL!");
@@ -123,7 +136,7 @@ public class App {
 		refresh();
 	}
 	
-	public void refresh() {
+	private void refresh() {
 		switch(g_board.whoIs(g_player.getX_position(), g_player.getY_position())) {
 		case WUMPUS:
 			System.out.println("WUMPUS CATCHED YOU!!");
@@ -132,6 +145,10 @@ public class App {
 		case CAVE:
 			System.out.println("YOU FELL IN THE CAVE!!");
 			G_ALIVE = false;
+			break;
+		case GOLD:
+			System.out.println("YOU GET THE GOLD!!");
+			G_GOLD = true;
 			break;
 		}
 		
