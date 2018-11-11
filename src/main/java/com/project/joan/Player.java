@@ -19,24 +19,20 @@ public class Player {
 	private String orientation;
 	boolean gold;
 
-	public Player() {
+	public Player(int p_arrows) {
 		x_position = 0;
 		y_position = 0;
 		orientation = EAST;
+		this.arrows = p_arrows;
 	}
 
 	public void move() {
-		System.out.println("Method move");
-		if (!Board.possibleGoAhead(getX_position(), getY_position(), getOrientation())) {
-			System.out.println("YOU GET THE WALL!");
-			return;
-		}
+		
 		goAhead();
-		Board.refresh();
+
 	}
 
 	public void goAhead() {
-		System.out.println("Method goAhead");
 		switch (this.orientation) {
 		case NORTH:
 			setY_position(getY_position() + 1);
@@ -54,7 +50,6 @@ public class Player {
 	}
 
 	public void rotate(String p_dir) {
-		System.out.println("Method rotate");
 		if (p_dir.equalsIgnoreCase(TURNLEFT)) {
 			switch (this.orientation) {
 			case NORTH:
