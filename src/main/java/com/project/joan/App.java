@@ -126,7 +126,11 @@ public class App {
 	public void refresh() {
 		switch(g_board.whoIs(g_player.getX_position(), g_player.getY_position())) {
 		case WUMPUS:
-			System.out.println("YOU DIED!!");
+			System.out.println("WUMPUS CATCHED YOU!!");
+			G_ALIVE = false;
+			break;
+		case CAVE:
+			System.out.println("YOU FELL IN THE CAVE!!");
 			G_ALIVE = false;
 			break;
 		}

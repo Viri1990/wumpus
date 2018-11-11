@@ -43,12 +43,32 @@ public class Board {
 	}
 
 	public void initialisePieces() {
-		int[] l_randomCoord = RandomNumbers();
-		wumpusDraw(l_randomCoord[0], l_randomCoord[1]);
+		initWumpus();
+		initCaves();
+	}
+
+	public void initWumpus() {
+		int[] l_validCoords = isValidCoord();
+		wumpusDraw(l_validCoords[0], l_validCoords[1]);
+	}
+
+	public int[] isValidCoord() {
+		int[] l_randomCoord;
+		do {
+			l_randomCoord = RandomNumbers();
+		} while (!(whoIs(l_randomCoord[0], l_randomCoord[1]) == VOID));
+		return l_randomCoord;
 	}
 
 	private void wumpusDraw(int p_x, int p_y) {
 		g_squareBoard[p_x][p_y] = WUMPUS;
+	}
+
+	public void initCaves() {
+		for (int i = 0; i <= g_numberCaves; i++) {
+			int[] l_validCoords = isValidCoord();
+			caveDraw(l_validCoords[0], l_validCoords[1]);
+		}
 	}
 
 	private void caveDraw(int p_x, int p_y) {
@@ -62,7 +82,7 @@ public class Board {
 		do {
 			l_x = l_random.nextInt(g_boardDimensions);
 			l_y = l_random.nextInt(g_boardDimensions);
-		} while (l_x == l_y);
+		} while ((l_x == l_y) && (l_x == 0));
 		return new int[] { l_x, l_y };
 	}
 
