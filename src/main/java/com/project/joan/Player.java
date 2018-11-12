@@ -3,8 +3,8 @@ package com.project.joan;
 public class Player {
 
 	private static final String GOAHEAD = "W";
-	private static final String TURNLEFT = "A";
-	private static final String TURNRIGHT = "D";
+	private static final String COUNTERCLOCKWISE = "A";
+	private static final String CLOCKWISE = "D";
 	private static final String SHOOT = "E";
 
 	private static final int IDENTIFIER = 1;
@@ -44,7 +44,7 @@ public class Player {
 	}
 
 	public void rotate(String p_dir) {
-		if (p_dir.equalsIgnoreCase(TURNLEFT)) {
+		if (p_dir.equalsIgnoreCase(COUNTERCLOCKWISE)) {
 			switch (this.orientation) {
 			case NORTH:
 				this.orientation = WEST;
@@ -79,7 +79,11 @@ public class Player {
 	}
 
 	public void shoot() {
-		System.out.println("Method shoot");
+		if(arrows>0) {
+			arrows=arrows-1;
+			return;
+		}
+		System.out.println("You already used all the arrows!");		
 	}
 	
 	public boolean startPosition() {
