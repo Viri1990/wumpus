@@ -56,17 +56,27 @@ public class Board {
 	// Wumpus and Caves need adjacent items, this method is responsible to set it
 	// where corresponds
 	private void initAdj(int p_item, int p_x, int p_y) {
+		System.out.println("\n\n");
+		drawBoard();
 		if (whoIs(p_x + 1, p_y) == VOID) {
 			Draw(p_item, p_x + 1, p_y);
+		} else if ((isThere(STENCH, p_x + 1, p_y))) {
+			Draw(STENCHWIND, p_x + 1, p_y);
 		}
 		if (whoIs(p_x - 1, p_y) == VOID) {
 			Draw(p_item, p_x - 1, p_y);
+		} else if ((isThere(STENCH, p_x - 1, p_y))) {
+			Draw(STENCHWIND, p_x - 1, p_y);
 		}
 		if (whoIs(p_x, p_y + 1) == VOID) {
 			Draw(p_item, p_x, p_y + 1);
+		} else if ((isThere(STENCH, p_x, p_y + 1))) {
+			Draw(STENCHWIND, p_x, p_y + 1);
 		}
 		if (whoIs(p_x, p_y - 1) == VOID) {
 			Draw(p_item, p_x, p_y - 1);
+		} else if ((isThere(STENCH, p_x, p_y - 1))) {
+			Draw(STENCHWIND, p_x, p_y - 1);
 		}
 	}
 
@@ -115,17 +125,34 @@ public class Board {
 			return -1;
 		}
 	}
-	
-	//Will return if the item is present in that position
+
+	// Will return true if the item is present in that position
 	public boolean isThere(int p_item, int p_x, int p_y) {
 		switch (p_item) {
 		case WUMPUS:
-			if(whoIs(p_x, p_y)==WUMPUS) {
+			if (whoIs(p_x, p_y) == WUMPUS) {
 				return true;
 			}
 			break;
 		case CAVE:
-			if(whoIs(p_x, p_y)==CAVE) {
+			if (whoIs(p_x, p_y) == CAVE) {
+				return true;
+			}
+		case STENCH:
+			if (whoIs(p_x, p_y) == STENCH) {
+				return true;
+			}
+			break;
+		case WIND:
+			if (whoIs(p_x, p_y) == WIND) {
+				return true;
+			}
+		case STENCHWIND:
+			if (whoIs(p_x, p_y) == STENCHWIND) {
+				return true;
+			}
+		case INITIALPOS:
+			if (whoIs(p_x, p_y) == INITIALPOS) {
 				return true;
 			}
 			break;
@@ -133,18 +160,49 @@ public class Board {
 		return false;
 	}
 
-	//Delete the wumpus from the game
+	// Delete the wumpus from the game
 	public void wumpusDead(int p_x, int p_y) {
 		g_squareBoard[p_x][p_y] = VOID;
+		removeStench(p_x, p_y);
 	}
-	//Create random coordenates and check if are valid
+
+	//After killing the Wumpus we need to remove their Stench from the adjacent positions!!
+	public void removeStench(int p_x, int p_y) {
+		if (isThere(STENCH, p_x + 1, p_y)) {
+			g_squareBoard[p_x + 1][p_y] = VOID;
+		} else if (isThere(STENCHWIND, p_x + 1, p_y)) {
+			g_squareBoard[p_x + 1][p_y] = WIND;
+		}
+		if (isThere(STENCH, p_x - 1, p_y)) {
+			g_squareBoard[p_x - 1][p_y] = VOID;
+		} else if (isThere(STENCHWIND, p_x - 1, p_y)) {
+			g_squareBoard[p_x - 1][p_y] = WIND;
+		}
+		if (isThere(STENCH, p_x, p_y + 1)) {
+			g_squareBoard[p_x][p_y + 1] = VOID;
+		} else if (isThere(STENCHWIND, p_x, p_y + 1)) {
+			g_squareBoard[p_x][p_y + 1] = WIND;
+		}
+		if (isThere(STENCH, p_x, p_y - 1)) {
+			g_squareBoard[p_x][p_y - 1] = VOID;
+		} else if (isThere(STENCHWIND, p_x, p_y - 1)) {
+			g_squareBoard[p_x][p_y - 1] = WIND;
+		}
+		drawBoard();
+	}
+
+	// Create random coordenates and check if are valid
 	private int[] validCoord() {
 		int[] l_randomCoord;
+		int x;
+		int y;
 		do {
 			l_randomCoord = RandomNumbers();
-		} while ((!(whoIs(l_randomCoord[0], l_randomCoord[1]) == VOID))
-				|| (l_randomCoord[0] == 0 && l_randomCoord[1] == 1)
-				|| (l_randomCoord[1] == 1 && l_randomCoord[0] == 0));
+			x = l_randomCoord[0];
+			y = l_randomCoord[1];
+		} while ((!(whoIs(x, y) == VOID))// Check if the position created is void
+				|| (x == 0 && y == 1)//
+				|| (x == 1 && y == 0));
 		return l_randomCoord;
 	}
 
@@ -158,8 +216,8 @@ public class Board {
 		} while ((l_x == l_y) && (l_x == 0));
 		return new int[] { l_x, l_y };
 	}
-	
-	//Method responsible to check if we are trying to go out from the Board bounds
+
+	// Method responsible to check if we are trying to go out from the Board bounds
 	public boolean possibleGoAhead(int p_x, int p_y, String p_orientation) {
 		if (p_orientation.equalsIgnoreCase(Player.NORTH) && p_y == g_boardDimensions - 1) {
 			return false;

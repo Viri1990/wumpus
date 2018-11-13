@@ -3,10 +3,10 @@ package com.project.joan;
 public class Player {
 
 	//All possibles orientations of the player
-	private final String GOAHEAD = "W";
-	private final String COUNTERCLOCKWISE = "A";
-	private final String CLOCKWISE = "D";
-	private final String SHOOT = "E";
+	public final String GOAHEAD = "W";
+	public static final String COUNTERCLOCKWISE = "A";
+	public static final String CLOCKWISE = "D";
+	public final String SHOOT = "E";
 
 	//Identifier of the player on the board
 	private final int IDENTIFIER = 1;
@@ -23,6 +23,7 @@ public class Player {
 	private int arrows;
 	private String orientation;
 	boolean gold;
+
 
 	//Player will be initialised on the initial position, orientation EAST and with the numb of arrows chose
 	public Player(int p_arrows) {
@@ -89,11 +90,15 @@ public class Player {
 	//Check if it still having the possibility to shoot
 	public boolean canShoot() {
 		if(arrows>0) {
-			arrows=arrows-1;
 			return true;
 		}
 		System.out.println("You already used all the arrows!");	
 		return false;
+	}
+	
+	public void shoot() {
+		this.arrows = this.arrows-1;
+		System.out.println("SHOOT!");
 	}
 	
 	//Check if the player is in the initial position

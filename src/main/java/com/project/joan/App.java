@@ -166,9 +166,9 @@ public class App {
 			break;
 		case SHOOT:
 			if (g_player.canShoot()) {
+				g_player.shoot();
 				checkKill();
 			}
-			System.out.println("SHOOT");
 			break;
 		default:
 			System.out.println("NON VALID CHOICE!");
