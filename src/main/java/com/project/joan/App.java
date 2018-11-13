@@ -112,9 +112,8 @@ public class App {
 		} while (l_numCaves < 4 || l_numCaves > 10);
 
 		g_board = new Board(l_dimBoard, l_numCaves);
-		g_board.drawBoard();
 		g_board.initialisePieces();
-		g_board.drawBoard();
+		//g_board.drawBoard();
 
 	}
 	

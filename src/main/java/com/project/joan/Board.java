@@ -56,8 +56,6 @@ public class Board {
 	// Wumpus and Caves need adjacent items, this method is responsible to set it
 	// where corresponds
 	private void initAdj(int p_item, int p_x, int p_y) {
-		System.out.println("\n\n");
-		drawBoard();
 		if (whoIs(p_x + 1, p_y) == VOID) {
 			Draw(p_item, p_x + 1, p_y);
 		} else if ((isThere(STENCH, p_x + 1, p_y))) {
@@ -188,7 +186,6 @@ public class Board {
 		} else if (isThere(STENCHWIND, p_x, p_y - 1)) {
 			g_squareBoard[p_x][p_y - 1] = WIND;
 		}
-		drawBoard();
 	}
 
 	// Create random coordenates and check if are valid
