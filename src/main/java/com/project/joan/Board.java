@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Board {
 
-	private static int g_boardDimensions;
+	private int g_boardDimensions;
 	private static int g_numberCaves;
 	private static int[][] g_squareBoard;
 
@@ -17,40 +17,23 @@ public class Board {
 	private static final int STENCHWIND = 8;
 	private static final int INITIALPOS = 9;
 
-	public Board(int p_dim, int p_numCaves) {// Let's initialise the board, parameter is the size of the square
+	// Initialise the board with the necessary parameters
+	public Board(int p_dim, int p_numCaves) {
 		g_boardDimensions = p_dim;
 		g_numberCaves = p_numCaves;
 		g_squareBoard = new int[g_boardDimensions][g_boardDimensions];
 		g_squareBoard[0][0] = INITIALPOS;
 	}
 
-	public void drawBoard() {
-		System.out.println("VOID= " + VOID + "\nWUMPUS=" + WUMPUS + "\nSTENCH=" + STENCH + "\nCAVE=" + CAVE + "\nWIND= "
-				+ WIND + "\nGOLD= " + GOLD + "\nINITIALPOS= " + INITIALPOS);
-		System.out.println("BOARD: \n\n");
-		for (int y = g_boardDimensions - 1; y >= 0; y--) {
-			for (int x = 0; x <= g_boardDimensions - 1; x++) {
-				System.out.print(" " + g_squareBoard[x][y]);
-			}
-			System.out.println("");
-		}
-	}
-
-	public int whoIs(int p_x, int p_y) {
-		try {
-			return g_squareBoard[p_x][p_y];
-		} catch (ArrayIndexOutOfBoundsException excepcion) {
-			System.out.println("You are out of the board!!");
-			return -1;
-		}
-	}
-
+	// Here we gonna call the corresponding methods to inicialise the items
 	public void initialisePieces() {
 		initWumpus();
 		initCaves();
 		initGold();
 	}
 
+	// This methods will call to validCoord() to get valid positions inside the
+	// board where set the items
 	private void initWumpus() {
 		int[] l_validCoords = validCoord();
 		Draw(WUMPUS, l_validCoords[0], l_validCoords[1]);
@@ -70,29 +53,24 @@ public class Board {
 		}
 	}
 
+	// Wumpus and Caves need adjacent items, this method is responsible to set it
+	// where corresponds
 	private void initAdj(int p_item, int p_x, int p_y) {
 		if (whoIs(p_x + 1, p_y) == VOID) {
 			Draw(p_item, p_x + 1, p_y);
-		} else if ((whoIs(p_x + 1, p_y) == WIND) || (whoIs(p_x + 1, p_y) == STENCH)) {
-			Draw(STENCHWIND, p_x - 1, p_y);
 		}
 		if (whoIs(p_x - 1, p_y) == VOID) {
 			Draw(p_item, p_x - 1, p_y);
-		} else if ((whoIs(p_x - 1, p_y) == WIND) || (whoIs(p_x + 1, p_y) == STENCH)) {
-			Draw(STENCHWIND, p_x - 1, p_y);
 		}
 		if (whoIs(p_x, p_y + 1) == VOID) {
 			Draw(p_item, p_x, p_y + 1);
-		} else if ((whoIs(p_x, p_y + 1) == WIND) || (whoIs(p_x + 1, p_y) == STENCH)) {
-			Draw(STENCHWIND, p_x - 1, p_y);
 		}
 		if (whoIs(p_x, p_y - 1) == VOID) {
 			Draw(p_item, p_x, p_y - 1);
-		} else if ((whoIs(p_x, p_y - 1) == WIND) || (whoIs(p_x + 1, p_y) == STENCH)) {
-			Draw(STENCHWIND, p_x - 1, p_y);
 		}
 	}
 
+	// Method to draw the corresponding item in base of the coordinates received
 	private void Draw(int p_item, int p_x, int p_y) {
 		switch (p_item) {
 		case WUMPUS:
@@ -110,10 +88,56 @@ public class Board {
 		case WIND:
 			g_squareBoard[p_x][p_y] = WIND;
 			break;
-
+		case STENCHWIND:
+			g_squareBoard[p_x][p_y] = STENCHWIND;
+			break;
 		}
 	}
 
+	// Method in charge to draw the board (Necessary for the development)
+	public void drawBoard() {
+		System.out.println("VOID= " + VOID + "\nWUMPUS=" + WUMPUS + "\nSTENCH=" + STENCH + "\nCAVE=" + CAVE + "\nWIND= "
+				+ WIND + "\nGOLD= " + GOLD + "\nINITIALPOS= " + INITIALPOS);
+		System.out.println("BOARD: \n\n");
+		for (int y = g_boardDimensions - 1; y >= 0; y--) {
+			for (int x = 0; x <= g_boardDimensions - 1; x++) {
+				System.out.print(" " + g_squareBoard[x][y]);
+			}
+			System.out.println("");
+		}
+	}
+
+	// Return the item present on the position received
+	public int whoIs(int p_x, int p_y) {
+		try {
+			return g_squareBoard[p_x][p_y];
+		} catch (ArrayIndexOutOfBoundsException excepcion) {
+			return -1;
+		}
+	}
+	
+	//Will return if the item is present in that position
+	public boolean isThere(int p_item, int p_x, int p_y) {
+		switch (p_item) {
+		case WUMPUS:
+			if(whoIs(p_x, p_y)==WUMPUS) {
+				return true;
+			}
+			break;
+		case CAVE:
+			if(whoIs(p_x, p_y)==CAVE) {
+				return true;
+			}
+			break;
+		}
+		return false;
+	}
+
+	//Delete the wumpus from the game
+	public void wumpusDead(int p_x, int p_y) {
+		g_squareBoard[p_x][p_y] = VOID;
+	}
+	//Create random coordenates and check if are valid
 	private int[] validCoord() {
 		int[] l_randomCoord;
 		do {
@@ -134,7 +158,8 @@ public class Board {
 		} while ((l_x == l_y) && (l_x == 0));
 		return new int[] { l_x, l_y };
 	}
-
+	
+	//Method responsible to check if we are trying to go out from the Board bounds
 	public boolean possibleGoAhead(int p_x, int p_y, String p_orientation) {
 		if (p_orientation.equalsIgnoreCase(Player.NORTH) && p_y == g_boardDimensions - 1) {
 			return false;
@@ -147,6 +172,10 @@ public class Board {
 		} else {
 			return true;
 		}
+	}
+
+	public int getG_boardDimensions() {
+		return g_boardDimensions;
 	}
 
 }

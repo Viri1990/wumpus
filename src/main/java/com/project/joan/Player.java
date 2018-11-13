@@ -2,23 +2,29 @@ package com.project.joan;
 
 public class Player {
 
-	private static final String GOAHEAD = "W";
-	private static final String COUNTERCLOCKWISE = "A";
-	private static final String CLOCKWISE = "D";
-	private static final String SHOOT = "E";
+	//All possibles orientations of the player
+	private final String GOAHEAD = "W";
+	private final String COUNTERCLOCKWISE = "A";
+	private final String CLOCKWISE = "D";
+	private final String SHOOT = "E";
 
-	private static final int IDENTIFIER = 1;
+	//Identifier of the player on the board
+	private final int IDENTIFIER = 1;
+	
+	//All possibles orientations of the player
 	public static final String NORTH = "N";
 	public static final String SOUTH = "S";
 	public static final String EAST = "E";
 	public static final String WEST = "W";
 
+	//Characteristics of the player
 	private int x_position;
 	private int y_position;
 	private int arrows;
 	private String orientation;
 	boolean gold;
 
+	//Player will be initialised on the initial position, orientation EAST and with the numb of arrows chose
 	public Player(int p_arrows) {
 		x_position = 0;
 		y_position = 0;
@@ -26,6 +32,7 @@ public class Player {
 		this.arrows = p_arrows;
 	}
 
+	//Method responsible to advance the player in base of the orientation it has
 	public void goAhead() {
 		switch (this.orientation) {
 		case NORTH:
@@ -43,6 +50,7 @@ public class Player {
 		}
 	}
 
+	//Rotate the player in base of the direction and the orientation it has
 	public void rotate(String p_dir) {
 		if (p_dir.equalsIgnoreCase(COUNTERCLOCKWISE)) {
 			switch (this.orientation) {
@@ -78,14 +86,17 @@ public class Player {
 		}
 	}
 
-	public void shoot() {
+	//Check if it still having the possibility to shoot
+	public boolean canShoot() {
 		if(arrows>0) {
 			arrows=arrows-1;
-			return;
+			return true;
 		}
-		System.out.println("You already used all the arrows!");		
+		System.out.println("You already used all the arrows!");	
+		return false;
 	}
 	
+	//Check if the player is in the initial position
 	public boolean startPosition() {
 		if(getX_position()==0 && getY_position()==0) {
 			return true;
