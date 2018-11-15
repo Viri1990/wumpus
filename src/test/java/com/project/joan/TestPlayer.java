@@ -2,22 +2,23 @@ package com.project.joan;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("Junit5 test for Player class")
 class TestPlayer {
 
 	private Player p1;
-	
+
 	@BeforeEach
 	public void initialise() {
 		p1 = new Player(1);
 	}
-	
+
 	@Test
 	void testStartPosition() {
 		assertTrue(p1.startPosition());
@@ -31,14 +32,14 @@ class TestPlayer {
 		p1.shoot();
 		assertFalse(p1.canShoot());
 	}
-	
+
 	@Test
 	void testGetOrientation() {
 		assertEquals(p1.getOrientation(), "E");
 		p1.rotate("A");
 		assertEquals(p1.getOrientation(), "N");
 	}
-	
+
 	@Test
 	void testGetXPosition() {
 		assertEquals(p1.getX_position(), 0);

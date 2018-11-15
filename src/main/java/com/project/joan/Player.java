@@ -2,30 +2,46 @@ package com.project.joan;
 
 public class Player {
 
-	//All possibles orientations of the player
+	/**
+	 * All possibles orientations of the player
+	 * 
+	 */
 	public final String GOAHEAD = "W";
 	public static final String COUNTERCLOCKWISE = "A";
 	public static final String CLOCKWISE = "D";
 	public final String SHOOT = "E";
 
-	//Identifier of the player on the board
+	/**
+	 * Identifier of the player on the board
+	 * 
+	 */
 	private final int IDENTIFIER = 1;
-	
-	//All possibles orientations of the player
+
+	/**
+	 * All possibles orientations of the player
+	 * 
+	 */
 	public static final String NORTH = "N";
 	public static final String SOUTH = "S";
 	public static final String EAST = "E";
 	public static final String WEST = "W";
 
-	//Characteristics of the player
+	/**
+	 * Characteristics of the player
+	 * 
+	 */
 	private int x_position;
 	private int y_position;
 	private int arrows;
 	private String orientation;
 	boolean gold;
 
-
-	//Player will be initialised on the initial position, orientation EAST and with the numb of arrows chose
+	/**
+	 * Player will be initialised on the initial position, orientation EAST and with
+	 * the numb of arrows chose
+	 * 
+	 * @param p_arrows
+	 */
 	public Player(int p_arrows) {
 		x_position = 0;
 		y_position = 0;
@@ -33,7 +49,10 @@ public class Player {
 		this.arrows = p_arrows;
 	}
 
-	//Method responsible to advance the player in base of the orientation it has
+	/**
+	 * Method responsible to advance the player in base of the orientation it has
+	 * 
+	 */
 	public void goAhead() {
 		switch (this.orientation) {
 		case NORTH:
@@ -51,7 +70,11 @@ public class Player {
 		}
 	}
 
-	//Rotate the player in base of the direction and the orientation it has
+	/**
+	 * Rotate the player in base of the direction and the orientation it has
+	 * 
+	 * @param p_dir
+	 */
 	public void rotate(String p_dir) {
 		if (p_dir.equalsIgnoreCase(COUNTERCLOCKWISE)) {
 			switch (this.orientation) {
@@ -68,8 +91,7 @@ public class Player {
 				this.orientation = SOUTH;
 				break;
 			}
-		}
-		else {
+		} else {
 			switch (this.orientation) {
 			case NORTH:
 				this.orientation = EAST;
@@ -87,23 +109,31 @@ public class Player {
 		}
 	}
 
-	//Check if it still having the possibility to shoot
+	/**
+	 * Check if it still having the possibility to shoot
+	 * 
+	 * @return
+	 */
 	public boolean canShoot() {
-		if(arrows>0) {
+		if (arrows > 0) {
 			return true;
 		}
-		System.out.println("You already used all the arrows!");	
+		System.out.println("You already used all the arrows!");
 		return false;
 	}
-	
+
 	public void shoot() {
-		this.arrows = this.arrows-1;
+		this.arrows = this.arrows - 1;
 		System.out.println("SHOOT!");
 	}
-	
-	//Check if the player is in the initial position
+
+	/**
+	 * Check if the player is in the initial position
+	 * 
+	 * @return
+	 */
 	public boolean startPosition() {
-		if(getX_position()==0 && getY_position()==0) {
+		if (getX_position() == 0 && getY_position() == 0) {
 			return true;
 		}
 		return false;

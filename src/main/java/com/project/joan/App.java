@@ -1,26 +1,23 @@
 package com.project.joan;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
-	//All actions player carry out
+	/**
+	 * All actions player carry out
+	 * 
+	 */
 	private final String EXIT = "Q";
 	private final String GOAHEAD = "W";
 	private final String COUNTERCLOCKWISE = "A";
 	private final String CLOCKWISE = "D";
 	private final String SHOOT = "E";
 
-	//Items present on the game
-	private final int VOID = 0;
-	private final int WUMPUS = 2;
-	private final int STENCH = 3;
-	private final int CAVE = 4;
-	private final int WIND = 5;
-	private final int GOLD = 6;
-	private final int STENCHWIND = 8;
-	private final int INITIALPOS = 9;
-
-	//Global variables we will interact on
+	/**
+	 * Global variables we will interact on
+	 * 
+	 */
 	private Scanner g_sc;
 	private boolean G_ALIVE;
 	private boolean G_GOLD;
@@ -28,17 +25,26 @@ public class App {
 	private Board g_board;
 	private Player g_player;
 
+	private static ArrayList<String> comments;
+
 	public App() {
 		g_sc = new Scanner(System.in);
 	}
-	
-	//Entry point of the app
+
+	/**
+	 * Entry point of the app
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		App l_app = new App();
 		l_app.start();
-	}	
-	
-	//Method start beggins with the flow of the app
+	}
+
+	/**
+	 * Method start beggins with the flow of the app
+	 * 
+	 */
 	public void start() {
 		System.out.println("WELCOME TO HUNT THE WUMPUS!!\n");
 
@@ -49,8 +55,12 @@ public class App {
 			menu(l_choice);
 		} while (l_choice != 3);
 	}
-	
-	//In this menu we will choose between the three different options
+
+	/**
+	 * In this menu we will choose between the three different options
+	 * 
+	 * @param p_choice
+	 */
 	private void menu(int p_choice) {
 		switch (p_choice) {
 		case 1:
@@ -59,12 +69,14 @@ public class App {
 		case 2:
 			showInstructions();
 			break;
-		case 3:
-			System.exit(0);
 		}
 	}
-	
-	//Method play is in charge to initialise the items and read the inputs from the user to call the method checkOptChoosed
+
+	/**
+	 * Method play is in charge to initialise the items and read the inputs from the
+	 * user to call the method checkOptChoosed
+	 * 
+	 */
 	private void play() {
 		prepareGame();
 		System.out.println("Let's start!!\n");
@@ -76,8 +88,12 @@ public class App {
 			checkOptChoosed(l_entry);
 		}
 	}
-	
-	//Initialise the variables that will determine the result of the game and the actors involved
+
+	/**
+	 * Initialise the variables that will determine the result of the game and the
+	 * actors involved
+	 * 
+	 */
 	private void prepareGame() {
 		G_ALIVE = true;
 		G_GOLD = false;
@@ -85,10 +101,13 @@ public class App {
 		createBoard();
 		createPlayer();
 	}
-	
-	//Here we will choose the dimensions of the board, besides the number of caves
-	//Here we also call the methods of the Board class responsible to initialise the static items (Caves,Wumpus,adjacents)
-	//There are some checks to assure data introduced accomplish the specifications
+
+	/**
+	 * Here we will choose the dimensions of the board, besides the number of caves
+	 * Here we also call the methods of the Board class responsible to initialise
+	 * the static items (Caves,Wumpus,adjacents) There are some checks to assure
+	 * data introduced accomplish the specifications
+	 */
 	private void createBoard() {
 		int l_dimBoard;
 		int l_numCaves;
@@ -113,12 +132,16 @@ public class App {
 
 		g_board = new Board(l_dimBoard, l_numCaves);
 		g_board.initialisePieces();
-		//g_board.drawBoard();
+		g_board.drawBoard();
 
 	}
-	
-	//This method is responsable to create the player that we will interact with
-	//We will choose the arrows that player will dispose and check the values is inside the bounds. 
+
+	/**
+	 * This method is responsable to create the player that we will interact with We
+	 * will choose the arrows that player will dispose and check the values is
+	 * inside the bounds.
+	 */
+
 	private void createPlayer() {
 		int l_numArrows;
 		do {
@@ -144,8 +167,13 @@ public class App {
 		System.out.println("Orientation= " + g_player.getOrientation());
 	}
 
-	//Here we will check if the player is able to do the action request
-	//If so, the flow will be redirected to the corresponding method
+	/**
+	 * Here we will check if the player is able to do the action request If so, the
+	 * flow will be redirected to the corresponding method
+	 * 
+	 * @param p_entry
+	 */
+
 	private void checkOptChoosed(String p_entry) {
 		switch (p_entry) {
 		case EXIT:
@@ -175,14 +203,16 @@ public class App {
 		}
 	}
 
-	//Here we will check if the arrow fired got the Wumpus;
-	//In base of the orientation of the player, we will go over the positions it has in front
-	//If so, we will delete the Wumpus from the board
+	/**
+	 * Here we will check if the arrow fired got the Wumpus; In base of the
+	 * orientation of the player, we will go over the positions it has in front If
+	 * so, we will delete the Wumpus from the board
+	 */
 	private void checkKill() {
 		switch (g_player.getOrientation()) {
 		case Player.NORTH:
 			for (int y = g_player.getY_position(); y <= g_board.getG_boardDimensions(); y++) {
-				if (g_board.isThere(WUMPUS, g_player.getX_position(), y)) {
+				if (g_board.isThere(Item.WUMPUS, g_player.getX_position(), y)) {
 					g_board.wumpusDead(g_player.getX_position(), y);
 					System.out.println("YOU KILLED THE WUMPUSSS!!");
 					break;
@@ -191,7 +221,7 @@ public class App {
 			break;
 		case Player.SOUTH:
 			for (int y = g_player.getY_position(); y >= 0; y--) {
-				if (g_board.isThere(WUMPUS, g_player.getX_position(), y)) {
+				if (g_board.isThere(Item.WUMPUS, g_player.getX_position(), y)) {
 					g_board.wumpusDead(g_player.getX_position(), y);
 					System.out.println("YOU KILLED THE WUMPUSSS!!");
 					break;
@@ -200,7 +230,7 @@ public class App {
 			break;
 		case Player.EAST:
 			for (int x = g_player.getX_position(); x <= g_board.getG_boardDimensions(); x++) {
-				if (g_board.isThere(WUMPUS, x, g_player.getY_position())) {
+				if (g_board.isThere(Item.WUMPUS, x, g_player.getY_position())) {
 					g_board.wumpusDead(x, g_player.getY_position());
 					System.out.println("YOU KILLED THE WUMPUSSS!!");
 					break;
@@ -209,7 +239,7 @@ public class App {
 			break;
 		case Player.WEST:
 			for (int x = g_player.getX_position(); x >= 0; x--) {
-				if (g_board.isThere(WUMPUS, x, g_player.getY_position())) {
+				if (g_board.isThere(Item.WUMPUS, x, g_player.getY_position())) {
 					g_board.wumpusDead(x, g_player.getY_position());
 					System.out.println("YOU KILLED THE WUMPUSSS!!");
 					break;
@@ -220,8 +250,12 @@ public class App {
 
 	}
 
-	//To decide if player can move, we will check, first of all, if he is inside the bounds of the board
-	//If so, we will advance the position of the player by method goAhead() and check if in the same positions there is any item (refresh method)
+	/**
+	 * To decide if player can move, we will check, first of all, if he is inside
+	 * the bounds of the board If so, we will advance the position of the player by
+	 * method goAhead() and check if in the same positions there is any item
+	 * (refresh method)
+	 */
 	private void checkMove() {
 		if (!g_board.possibleGoAhead(g_player.getX_position(), g_player.getY_position(), g_player.getOrientation())) {
 			System.out.println("YOU GET THE WALL!");
@@ -231,8 +265,11 @@ public class App {
 		refresh();
 	}
 
-	//Here we will consult what's there in the position of the player and will advice of it
-	//Besides of set values on the global variables responsibles to check the result of the game
+	/**
+	 * Here we will consult what's there in the position of the player and will
+	 * advice of it Besides of set values on the global variables responsibles to
+	 * check the result of the game
+	 */
 	private void refresh() {
 		switch (g_board.whoIs(g_player.getX_position(), g_player.getY_position())) {
 		case WUMPUS:
@@ -263,7 +300,9 @@ public class App {
 			}
 			break;
 		}
-
 	}
 
+	private void display(String p_result) {
+		System.out.println(p_result);
+	}
 }
